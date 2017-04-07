@@ -118,14 +118,6 @@ def ctr_join(master,ctr_ip,ctr_tp):
     stdin,stdout,stderr=ssh.exec_command("activate control-cluster")
     print stdout.readlines()[0]
 
-def ctr_join(master,ctr_ip,ctr_tp):
-    print ctr_ip+" activation"
-    ssh.connect(master,username=nsx_user,password=nsx_pass)
-    stdin,stdout,stderr=ssh.exec_command("join control-cluster %s thumbprint %s"%(ctr_ip,ctr_tp))
-    print stdout.readlines()[0]
-    stdin,stdout,stderr=ssh.exec_command("activate control-cluster")
-    print stdout.readlines()[0]
-
 def esg_reg(esg):
     print esg+" is on process" 
     ssh.connect(esg,username=nsx_user,password=nsx_pass)
