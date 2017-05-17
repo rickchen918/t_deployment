@@ -9,6 +9,7 @@ mgrpasswd="Nicira123$"
 hostuser="root"
 hostpasswd="nicira123"
 
+
 # Get thumbprint from host and return to global variable 
 def hosthumb(esx):
     ssh=paramiko.SSHClient()
@@ -46,4 +47,21 @@ def hostreg(esx):
     resp=conn.text
     print resp
 
-hostreg("192.168.64.150")
+def ls_host():
+    cred=base64.b64encode('%s:%s'%(mgruser,mgrpasswd))
+    header={"Authorization":"Basic %s"%cred,"Content-type":"application/json"}
+    api_ep="/api/v1/fabric/nodes"
+    url="https://"+str(mgr)+str(api_ep)
+    conn=requests.get(url,verify=False,headers=header)
+    resp=conn.text
+    print resp
+
+i=150
+j=152
+while i<j:
+    x="192.168.64.%s"%(i)
+    hostreg(x)
+    i+=1
+
+ls_host()
+
