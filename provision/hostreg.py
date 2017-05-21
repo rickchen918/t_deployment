@@ -8,7 +8,10 @@ mgruser="admin"
 mgrpasswd="Nicira123$"
 hostuser="root"
 hostpasswd="nicira123"
-
+cred=base64.b64encode('%s:%s'%(mgruser,mgrpasswd))
+header={"Authorization":"Basic %s"%cred,"Content-type":"application/json"}
+api_ep="/api/v1/fabric/nodes"
+url="https://"+str(mgr)+str(api_ep)
 
 # Get thumbprint from host and return to global variable 
 def hosthumb(esx):
@@ -23,10 +26,6 @@ def hosthumb(esx):
 
 # register host, the thumbprint is required when call registration api
 def hostreg(esx):
-    cred=base64.b64encode('%s:%s'%(mgruser,mgrpasswd))
-    header={"Authorization":"Basic %s"%cred,"Content-type":"application/json"}
-    api_ep="/api/v1/fabric/nodes"
-    url="https://"+str(mgr)+str(api_ep)
     tp=hosthumb(esx)
     print tp
     body="""{
@@ -48,14 +47,11 @@ def hostreg(esx):
     print resp
 
 def ls_host():
-    cred=base64.b64encode('%s:%s'%(mgruser,mgrpasswd))
-    header={"Authorization":"Basic %s"%cred,"Content-type":"application/json"}
-    api_ep="/api/v1/fabric/nodes"
-    url="https://"+str(mgr)+str(api_ep)
     conn=requests.get(url,verify=False,headers=header)
     resp=conn.text
     print resp
 
+# defines the ipf address of host node to go host registration 
 i=150
 j=152
 while i<j:
@@ -63,5 +59,5 @@ while i<j:
     hostreg(x)
     i+=1
 
-ls_host()
+#ls_host()
 
